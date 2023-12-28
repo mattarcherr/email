@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include "tc.h"
 
 int main() {
-    printf("test\n");
+    printf("%stest\n%s", TC_CYN, TC_NRM);
     return 0;
 }
