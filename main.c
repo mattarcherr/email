@@ -2,6 +2,8 @@
 #include "tc.h"
 
 int main() {
-    printf("%stest\n%s", TC_CYN, TC_NRM);
+    TC_CLR_SCR();
+    // printf("%s", TC_BG_CYN);
+    // printf("%stest\n%s", TC_YEL, TC_NRM);
     return 0;
 }
