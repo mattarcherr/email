@@ -1,9 +1,35 @@
 #include <stdio.h>
+#include <signal.h>
 #include "tc.h"
 
-int main() {
+
+void window_resized() {
+    printf("%s", "\x1B[41m");
     TC_CLR_SCR();
-    // printf("%s", TC_BG_CYN);
-    // printf("%stest\n%s", TC_YEL, TC_NRM);
+
+    int x, y;
+    tc_get_cols_rows(&x, &y);
+
+    tc_move_cursor((x-6)/2, y/2);
+    printf("%sVIMAIL\n", TC_BLU);
+}
+
+int main() {
+
+    signal(SIGWINCH, &window_resized);
+    tc_echo_off();
+    tc_hide_cursor();
+
+    printf("%s", "\x1B[41m");
+    TC_CLR_SCR();
+
+    int x, y;
+    tc_get_cols_rows(&x, &y);
+
+    tc_move_cursor((x-6)/2, y/2);
+    printf("%sVIMAIL\n", TC_BLU);
+
+    getchar();
+    tc_show_cursor();
     return 0;
 }
