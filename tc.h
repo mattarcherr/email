@@ -31,7 +31,7 @@
 #define TC_BG_WHT "\033[47m"
 
 // Clear Screen
-#define TC_CLR_SCR() puts("\033[2J")
+#define tc_clr_screen() puts("\033[2J")
 
 // Move cursor
 #define tc_move_cursor(X, Y) printf("\033[%d;%dH", Y, X)
@@ -45,8 +45,7 @@
 #define tc_show_cursor() puts("\033[?25h");
 
 
-void tc_echo_off();
-void tc_echo_on();
+void tc_alter_termflag(const tcflag_t);
 
 void tc_get_cols_rows(int *cols, int *rows);
 

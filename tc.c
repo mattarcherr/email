@@ -42,41 +42,6 @@ int hex_to_dec_2d(char hex[]) {
     return value;
 }
 
-void tc_set_colour(char fg[], char bg[], char text[]){
-
-    int fg_R, fg_G, fg_B = 0;
-    int bg_R, bg_G, bg_B = 0;
-
-    fg_R = hex_to_dec_2d((char[]) {fg[1], fg[2]});
-    fg_G = hex_to_dec_2d((char[]) {fg[3], fg[4]});
-    fg_B = hex_to_dec_2d((char[]) {fg[5], fg[6]});
-
-    bg_R = hex_to_dec_2d((char[]) {bg[1], bg[2]});
-    bg_G = hex_to_dec_2d((char[]) {bg[3], bg[4]});
-    bg_B = hex_to_dec_2d((char[]) {bg[5], bg[6]});
-
-
-    char fg_str[50];
-    char bg_str[20];
-    sprintf(fg_str, "\033[38;2;%i;%i;%i\033[48;2;%i;%i;%im%s", fg_R, fg_G, fg_B, bg_R, bg_G, bg_B, text); // fg
-    puts(fg_str); // fg
-}
-
-const char * tc_get_colour(char hex[]){
-
-    int R, G, B = 0;
-
-    R = hex_to_dec_2d((char[]) {hex[1],hex[2]});
-    G = hex_to_dec_2d((char[]) {hex[3],hex[4]});
-    B = hex_to_dec_2d((char[]) {hex[5],hex[6]});
-
-
-
-    char* str = malloc(25);
-    sprintf(str, "\033[48;2;%i;%i;%im", R, G, B); // bg
-    return str;
-}
-
 // get size of window
 void tc_get_cols_rows(int *cols, int *rows){
 
@@ -86,12 +51,20 @@ void tc_get_cols_rows(int *cols, int *rows){
 	*rows = size.ws_row;
 }
 
+void tc_alter_termflag(const tcflag_t flag) {
+
+	struct termios term;
+	tcgetattr(1, &term);
+	term.c_lflag &= ( flag );
+	tcsetattr(1, TCSANOW, &term);
+}
+
 // disable console echo attr
 void tc_echo_off(){
 
 	struct termios term;
 	tcgetattr(1, &term);
-	term.c_lflag &= ~ECHO;
+	term.c_lflag &= ( ~ICANON & ~ECHO );
 	tcsetattr(1, TCSANOW, &term);
 }
 
@@ -100,7 +73,8 @@ void tc_echo_on(){
 
 	struct termios term;
 	tcgetattr(1, &term);
-	term.c_lflag |= ECHO;
+	term.c_lflag |= ( ICANON &  ECHO );
 	tcsetattr(1, TCSANOW, &term);
 
 }
+
