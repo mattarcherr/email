@@ -21,12 +21,26 @@ void draw_window() {
     printf("%s%s(1) %s\n", TC_BG_WHT, "\033[38;5;0m", emailaddr1);
 }
 
-void setup() {
+struct termios setup() {
 
     tc_alter_termflag(~ECHO);
     tc_alter_termflag(~ICANON);
     tc_enter_alt_screen();
     tc_hide_cursor();
+
+    struct termios init_term;
+    tcgetattr(1, &init_term);
+    return init_term;
+}
+
+void setdown(struct termios termAttr) {
+
+    tc_alter_termflag(ECHO);
+    tc_alter_termflag(ICANON);
+    tc_exit_alt_screen();
+    tc_show_cursor();
+
+    tcsetattr(1, TCSANOW, &termAttr);
 }
 
 int main() {
@@ -34,8 +48,7 @@ int main() {
     signal(SIGWINCH, &draw_window);
 
     struct termios init_term;
-    tcgetattr(1, &init_term);
-    setup();
+    init_term = setup();
 
     draw_window();
 
@@ -46,8 +59,6 @@ int main() {
         c = getchar();
     } while (c != 'q');
 
-    tc_show_cursor();
-    tc_exit_alt_screen();
-    tcsetattr(1, TCSANOW, &init_term);
+    setdown(init_term);
     return 0;
 }
