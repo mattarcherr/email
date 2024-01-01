@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <termios.h>
 #include <signal.h>
+
 #include "tc.h"
+#include "control.h"
 
 
 void draw_window() {
@@ -45,20 +47,24 @@ void setdown(struct termios termAttr) {
 
 int main() {
 
+    // redraw on window size change
     signal(SIGWINCH, &draw_window);
 
+    // set up
     struct termios init_term;
     init_term = setup();
 
     draw_window();
 
+    // quit on 'q'
     char c;
-
     do {
 
         c = getchar();
+        switchKhit(c);
     } while (c != 'q');
 
+    // set down
     setdown(init_term);
     return 0;
 }

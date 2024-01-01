@@ -58,23 +58,3 @@ void tc_alter_termflag(const tcflag_t flag) {
 	term.c_lflag &= ( flag );
 	tcsetattr(1, TCSANOW, &term);
 }
-
-// disable console echo attr
-void tc_echo_off(){
-
-	struct termios term;
-	tcgetattr(1, &term);
-	term.c_lflag &= ( ~ICANON & ~ECHO );
-	tcsetattr(1, TCSANOW, &term);
-}
-
-// enable console echo attr
-void tc_echo_on(){
-
-	struct termios term;
-	tcgetattr(1, &term);
-	term.c_lflag |= ( ICANON &  ECHO );
-	tcsetattr(1, TCSANOW, &term);
-
-}
-
