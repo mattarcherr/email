@@ -11,5 +11,9 @@ void switchKhit(char c) {
         case 'b':
             printf("BEE");
             break;
+        case '1':
+
+            
+            break;
     }
 }
