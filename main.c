@@ -4,7 +4,7 @@
 
 #include "tc.h"
 #include "control.h"
-// #include "draw.h"
+#include "draw.h"
 
 
 // void draw_window() {
@@ -52,7 +52,7 @@ int main() {
     tc_enter_alt_screen();
     // redraw on window size change
     char* test = "splash";
-    signal(SIGWINCH, draw_window());
+    signal(SIGWINCH, draw_window);
 
     // set up
     struct termios init_term;
