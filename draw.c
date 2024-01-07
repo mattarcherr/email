@@ -4,17 +4,9 @@
 #include "tc.h"
 #include "draw.h"
 
-// enum program_screen {
-//     SPLASH,
-//     HOME
-// };
-
 enum program_screen program_screen = SPLASH;
-
-void set_program_screen(enum program_screen screen) {
-
-    program_screen = screen;
-}
+void set_program_screen(enum program_screen screen) { program_screen = screen; }
+enum program_screen get_program_screen() { return program_screen; }
 
 void draw_window() {
 
@@ -28,8 +20,6 @@ void draw_window() {
             draw_home();
             break;
     }
-
-    // draw_splash();
 }
 
 

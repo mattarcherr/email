@@ -6,24 +6,6 @@
 #include "control.h"
 #include "draw.h"
 
-
-// void draw_window() {
-//     printf("%s", "\033[47m");
-//     tc_clr_screen();
-//
-//     int x, y;
-//     tc_get_cols_rows(&x, &y);
-//
-//     tc_move_cursor((x-6)/2, (y/2)-3);
-//     printf("%s%sVIMAIL\n", TC_BG_WHT, "\033[38;5;0m");
-//
-//
-//     char emailaddr1[] = "matthewarcherr@gmail.com";
-//     int emaillen= strlen(emailaddr1)+5;
-//     tc_move_cursor((x-emaillen)/2, (y/2)+2);
-//     printf("%s%s(1) %s\n", TC_BG_WHT, "\033[38;5;0m", emailaddr1);
-// }
-
 struct termios setup() {
 
     tc_alter_termflag(~ECHO);
@@ -49,9 +31,7 @@ void setdown(struct termios termAttr) {
 
 int main() {
 
-    tc_enter_alt_screen();
     // redraw on window size change
-    char* test = "splash";
     signal(SIGWINCH, draw_window);
 
     // set up
@@ -70,6 +50,5 @@ int main() {
 
     // set down
     setdown(init_term);
-    tc_exit_alt_screen();
     return 0;
 }

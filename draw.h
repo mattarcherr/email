@@ -11,5 +11,6 @@ enum program_screen {
     HOME
 };
 void set_program_screen(enum program_screen screen);
+enum program_screen get_program_screen();
 
 #endif
