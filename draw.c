@@ -48,12 +48,7 @@ void draw_home() {
     int x, y;
     tc_get_cols_rows(&x, &y);
 
-    tc_move_cursor((x-6)/2, (y/2)-3);
-    printf("%s%sHOMETEST\n", TC_BG_WHT, "\033[38;5;0m");
+    tc_move_cursor(3, 2);
+    printf("%s         ", TC_BG_RED);
 
-
-    char emailaddr1[] = "matthewarcherr@gmail.com";
-    int emaillen= strlen(emailaddr1)+5;
-    tc_move_cursor((x-emaillen)/2, (y/2)+2);
-    printf("%s%s(1) %s\n", TC_BG_WHT, "\033[38;5;0m", emailaddr1);
 }
