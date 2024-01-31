@@ -2,14 +2,14 @@ CC=gcc
 
 default: vimail
 
-vimail: main.o tc.o control.o draw.o
-	$(CC) main.o tc.o control.o draw.o -o $@
+vimail: main.o tools.o control.o draw.o
+	$(CC) main.o tools.o control.o draw.o -o $@
 
 main.o: main.c
 	$(CC) -c main.c 
 
-tc.o: tc.c tc.h
-	$(CC) -c tc.c
+tools.o: tools.c tools.h
+	$(CC) -c tools.c
 
 control.o: control.c control.h
 	$(CC) -c control.c

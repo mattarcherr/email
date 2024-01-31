@@ -1,4 +1,4 @@
-#include "tc.h"
+#include "tools.h"
 
 // get size of window
 void tc_get_cols_rows(int *cols, int *rows){

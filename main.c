@@ -2,7 +2,7 @@
 #include <termios.h>
 #include <signal.h>
 
-#include "tc.h"
+#include "tools.h"
 #include "control.h"
 #include "draw.h"
 
