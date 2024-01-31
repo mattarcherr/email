@@ -1,5 +1,5 @@
-#ifndef TC_H
-#define TC_H
+#ifndef TOOLS_H
+#define TOOLS_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,25 +10,27 @@
 // #include <unistd.h>
 
 
-// TC for terminal control
-#define TC_NRM  "\033[0m"
-#define TC_RED  "\033[1;31m"
-#define TC_GRN  "\033[1;32m"
-#define TC_YEL  "\033[1;33m"
-#define TC_BLU  "\033[1;34m"
-#define TC_MAG  "\033[1;35m"
-#define TC_CYN  "\033[1;36m"
-#define TC_WHT  "\033[1;37m"
+// Foreground colours
+
+extern const char TC_NRM[];
+extern const char TC_RED[];
+extern const char TC_GRN[];
+extern const char TC_YEL[];
+extern const char TC_BLU[];
+extern const char TC_MAG[];
+extern const char TC_CYN[];
+extern const char TC_WHT[];
 
 // Background colours
-#define TC_BG_NRM "\033[40m"
-#define TC_BG_RED "\033[41m"
-#define TC_BG_GRN "\033[42m"
-#define TC_BG_YEL "\033[43m"
-#define TC_BG_BLU "\033[44m"
-#define TC_BG_MAG "\033[45m"
-#define TC_BG_CYN "\033[46m"
-#define TC_BG_WHT "\033[47m"
+
+extern const char TC_BG_NRM[];
+extern const char TC_BG_RED[];
+extern const char TC_BG_GRN[];
+extern const char TC_BG_YEL[];
+extern const char TC_BG_BLU[];
+extern const char TC_BG_MAG[];
+extern const char TC_BG_CYN[];
+extern const char TC_BG_WHT[];
 
 // Clear Screen
 #define tc_clr_screen() puts("\033[2J")

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "tc.h"
+#include "tools.h"
 #include "draw.h"
 
 enum program_screen program_screen = SPLASH;
@@ -49,6 +49,6 @@ void draw_home() {
     tc_get_cols_rows(&x, &y);
 
     tc_move_cursor(3, 2);
-    printf("%s         ", TC_BG_RED);
+    printf("%s", TC_BG_RED);
 
 }
