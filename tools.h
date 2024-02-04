@@ -46,9 +46,13 @@ extern const char TC_BG_WHT[];
 #define tc_hide_cursor() puts("\033[?25l");
 #define tc_show_cursor() puts("\033[?25h");
 
+void tc_colour_screen(const char colour[]);
 
 void tc_alter_termflag(const tcflag_t);
 
 void tc_get_cols_rows(int *cols, int *rows);
+
+// Get list of account email addresses
+int get_num_accounts();
 
 #endif

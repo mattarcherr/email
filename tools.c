@@ -22,7 +22,14 @@ const char TC_BG_MAG[] = "\033[45m";
 const char TC_BG_CYN[] = "\033[46m";
 const char TC_BG_WHT[] = "\033[47m";
 
-// get size of window
+// Colour entire screen
+void tc_colour_screen(const char colour[])
+{
+    puts(colour);
+    puts("\033[2J");
+}
+
+// Get size of window
 void tc_get_cols_rows(int *cols, int *rows){
 
 	struct winsize size;
@@ -30,6 +37,8 @@ void tc_get_cols_rows(int *cols, int *rows){
 	*cols = size.ws_col;
 	*rows = size.ws_row;
 }
+
+// Alter terminal flags
 
 void tc_alter_termflag(const tcflag_t flag) {
 

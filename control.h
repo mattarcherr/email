@@ -3,6 +3,4 @@
 
 void switchKhit(char c);
 
-
-
 #endif

@@ -1,21 +1,35 @@
+# Directories
+BUILD_DIR = build
+OBJ_DIR = $(BUILD_DIR)/obj
+
+# Complation
 CC=gcc
 
-default: vimail
+# Files
+TARGET = $(BUILD_DIR)/vimail
 
-vimail: main.o tools.o control.o draw.o
-	$(CC) main.o tools.o control.o draw.o -o $@
+OBJECTS = $(OBJ_DIR)/main.o \
+		  $(OBJ_DIR)/draw.o \
+		  $(OBJ_DIR)/tools.o \
+		  $(OBJ_DIR)/control.o 
 
-main.o: main.c
-	$(CC) -c main.c 
+HEADERS = draw.h \
+		  tools.h \
+		  control.h
 
-tools.o: tools.c tools.h
-	$(CC) -c tools.c
+# ----------------------------
+#  Rules
+default: $(TARGET)
 
-control.o: control.c control.h
-	$(CC) -c control.c
+# Build binary
+$(TARGET): $(OBJECTS)
+	@mkdir -p $(BUILD_DIR)
+	$(CC) $^ -o $@
 
-draw.o: draw.c draw.h
-	$(CC) -c draw.c
+# Build object files
+$(OBJ_DIR)/%.o: %.c $(HEADERS)
+	@mkdir -p $(OBJ_DIR) 
+	$(CC) -c -o $@ $<
 
 clean:
-	rm main.o tc.o vimail
+	rm -rf build
