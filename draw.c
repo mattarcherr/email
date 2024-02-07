@@ -35,9 +35,20 @@ void draw_splash()
     printf("%sVIMAIL\n", "\033[38;5;0m");
 
 
-    char* emailaddr1 = "matthewarcherr@gmail.com";
-    tc_move_cursor((x-24)/2, (y/2)+2);
-    printf("%s(1) %s\n", "\033[38;5;0m", emailaddr1);
+    // char* emailaddr1 = "matthewarcherr@gmail.com";
+    // tc_move_cursor((x-24)/2, (y/2)+2);
+    // printf("%s(1) %s\n", "\033[38;5;0m", emailaddr1);
+
+    const char* accounts_addrs[2];
+    accounts_addrs[0] = "matthewarcherr@gmail.com";
+    accounts_addrs[1] = "john@doe.com";
+
+    for (int i = 0; i < 2; i++) {
+
+        int email_len = strlen(accounts_addrs[i])+5;
+        tc_move_cursor((x-email_len)/2, (y/2)+(2+i));
+        printf("%s(%i) %s\n", "\033[38;5;0m", i+1, accounts_addrs[i]);
+    }
 
     // const char* emailaddrs[get_num_accounts()];
     // size_t n = sizeof(emailaddrs) / sizeof(emailaddrs[0]);
