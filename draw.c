@@ -34,7 +34,13 @@ void draw_splash()
     tc_move_cursor((x-6)/2, (y/2)-3);
     printf("%sVIMAIL\n", "\033[38;5;0m");
 
-    const char* accounts_addrs[2];
+
+
+    const char* accounts_addrs[get_num_accounts()];
+
+    // for (int i = 0; i < get_num_accounts(); i++) {
+
+        // accounts[i] = get_account(i);
     accounts_addrs[0] = "matthewarcherr@gmail.com";
     accounts_addrs[1] = "john@doe.com";
 
@@ -49,13 +55,26 @@ void draw_splash()
 void draw_home()
 {
 
-    printf("%s", "\033[47m");
-    tc_clr_screen();
+    tc_colour_screen(TC_BG_WHT);
 
     int x, y;
     tc_get_cols_rows(&x, &y);
 
-    tc_move_cursor(3, 2);
-    printf("%s", TC_BG_RED);
+    tc_move_cursor(25, 3);
+    printf("%s%s", TC_BG_WHT, "┃"); 
 
+    tc_move_cursor(25, 4);
+    printf("%s%s", TC_BG_WHT, "┃"); 
+
+    tc_move_cursor(25, 5);
+    printf("%s%s", TC_BG_WHT, "┃"); 
+
+    tc_move_cursor(25, 6);
+    printf("%s%s", TC_BG_WHT, "┃"); 
+
+    tc_move_cursor(25, 7);
+    printf("%s%s", TC_BG_WHT, "┃"); 
+
+    tc_move_cursor(25, 8);
+    printf("%s%s", TC_BG_WHT, "┃"); 
 }

@@ -55,4 +55,6 @@ void tc_get_cols_rows(int *cols, int *rows);
 // Get list of account email addresses
 int get_num_accounts();
 
+// Get account names
+void get_accounts();
 #endif

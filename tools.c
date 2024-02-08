@@ -47,3 +47,24 @@ void tc_alter_termflag(const tcflag_t flag) {
 	term.c_lflag &= ( flag );
 	tcsetattr(1, TCSANOW, &term);
 }
+
+
+// Get number of saved accounts
+int get_num_accounts() {
+
+    return 2;
+}
+
+void get_accounts() {
+
+    for (int i = 0; i < get_num_accounts(); i++) {
+
+        // accounts[i] = "matthewarcherr@gmail.com";
+    }
+}
+
+
+
+
+
+
