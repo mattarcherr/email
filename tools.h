@@ -52,6 +52,9 @@ void tc_alter_termflag(const tcflag_t);
 
 void tc_get_cols_rows(int *cols, int *rows);
 
+// Draw vertical line
+void draw_v_line(int x, int start, int end);
+
 // Get list of account email addresses
 int get_num_accounts();
 

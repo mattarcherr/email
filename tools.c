@@ -48,6 +48,20 @@ void tc_alter_termflag(const tcflag_t flag) {
 	tcsetattr(1, TCSANOW, &term);
 }
 
+// *******************************
+// Draw Functions
+// *******************************
+
+// Draw line
+void draw_v_line(int x, int start, int end) {
+
+    for (int i = 0; i < (end - start); i++) {
+
+        tc_move_cursor(x, start+i);
+        printf("%s%s", TC_BG_WHT, "┃"); 
+    }
+}
+
 
 // Get number of saved accounts
 int get_num_accounts() {
