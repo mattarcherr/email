@@ -10,6 +10,7 @@ const char TC_BLU[] = "\033[1;34m";
 const char TC_MAG[] = "\033[1;35m";
 const char TC_CYN[] = "\033[1;36m";
 const char TC_WHT[] = "\033[1;37m";
+const char TC_GRY[] = "\033[38;2;154;161;168m";
 
 // Background colours
 
@@ -21,6 +22,8 @@ const char TC_BG_BLU[] = "\033[44m";
 const char TC_BG_MAG[] = "\033[45m";
 const char TC_BG_CYN[] = "\033[46m";
 const char TC_BG_WHT[] = "\033[47m";
+const char TC_BG_SLM[] = "\033[48;2;255;171;145m";
+const char TC_BG_GRY[] = "\033[48;2;208;214;219m";
 
 // Colour entire screen
 void tc_colour_screen(const char colour[])
@@ -52,7 +55,7 @@ void tc_alter_termflag(const tcflag_t flag) {
 // Draw Functions
 // *******************************
 
-// Draw line
+// Draw vertical line
 void draw_v_line(int x, int start, int end) {
 
     for (int i = 0; i < (end - start); i++) {
@@ -62,6 +65,15 @@ void draw_v_line(int x, int start, int end) {
     }
 }
 
+// Draw horizontal line
+void draw_h_line(int y, int start, int end) {
+
+    for (int i = 0; i < (end - start); i++) {
+
+        tc_move_cursor(start+i, y);
+        printf("%s%s", TC_BG_WHT, "━"); 
+    }
+}
 
 // Get number of saved accounts
 int get_num_accounts() {

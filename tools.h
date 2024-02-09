@@ -20,6 +20,7 @@ extern const char TC_BLU[];
 extern const char TC_MAG[];
 extern const char TC_CYN[];
 extern const char TC_WHT[];
+extern const char TC_GRY[];
 
 // Background colours
 
@@ -31,6 +32,8 @@ extern const char TC_BG_BLU[];
 extern const char TC_BG_MAG[];
 extern const char TC_BG_CYN[];
 extern const char TC_BG_WHT[];
+extern const char TC_BG_SLM[];
+extern const char TC_BG_GRY[];
 
 // Clear Screen
 #define tc_clr_screen() puts("\033[2J")
@@ -54,6 +57,9 @@ void tc_get_cols_rows(int *cols, int *rows);
 
 // Draw vertical line
 void draw_v_line(int x, int start, int end);
+
+// Draw horizontal line
+void draw_h_line(int y, int start, int end);
 
 // Get list of account email addresses
 int get_num_accounts();

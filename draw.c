@@ -62,13 +62,18 @@ void draw_home()
 
 
     tc_move_cursor(5, 3);
-    printf("%s -- ", TC_BG_MAG);
+    printf("%s -- ", TC_BG_SLM);
     tc_move_cursor(9, 3);
-    printf("%s Mail ", TC_BG_CYN);
+    printf("%s Mail   %s42936 messages ", TC_BG_GRY, TC_GRY);
 
+    tc_move_cursor(40, 3);
+    printf("%s%s -- ", TC_BG_SLM, "\033[38;5;0m");
+    tc_move_cursor(44, 3);
+    printf("%s List              ", TC_BG_GRY);
 
+    draw_v_line(35, 4, y-3);   
 
-    draw_v_line(25, 4, y-3);   
+    draw_h_line(30, 1, x-3);
 
     // tc_move_cursor(25, 3);
     // printf("%s%s", TC_BG_WHT, "┃"); 
