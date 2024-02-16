@@ -72,24 +72,4 @@ void draw_home()
     printf("%s List              ", TC_BG_GRY);
 
     draw_v_line(35, 4, y-3);   
-
-    draw_h_line(30, 1, x-3);
-
-    // tc_move_cursor(25, 3);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
-    //
-    // tc_move_cursor(25, 4);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
-    //
-    // tc_move_cursor(25, 5);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
-    //
-    // tc_move_cursor(25, 6);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
-    //
-    // tc_move_cursor(25, 7);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
-    //
-    // tc_move_cursor(25, 8);
-    // printf("%s%s", TC_BG_WHT, "┃"); 
 }
