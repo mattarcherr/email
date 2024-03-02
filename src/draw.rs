@@ -1,3 +1,5 @@
+use crate::tools;
+
 use crate::SESSION;
 use crate::{color, cursor};
 use crate::CurrentScreen;
@@ -32,13 +34,11 @@ fn draw_splash()
 }
 fn draw_home()
 {
-    println!("\x1b[47m"); // bg colour white
-    println!("{}{}",termion::color::Bg(color::Rgb(255,255,255)) , termion::clear::All);  // clear screen
-                        
-
+    println!("{}{}", termion::color::Bg(color::Rgb(255,255,255)), termion::clear::All);  // clear screen
 
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
 
-
     println!("{}{}HOME!", color::Fg(color::Red), cursor::Goto(x/2-6, y/2) );
+    tools::draw_line_v(10, 1, 10);
+    tools::draw_line_h(30, 1, 61);
 }
