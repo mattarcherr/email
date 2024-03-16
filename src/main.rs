@@ -1,6 +1,7 @@
 mod draw;
 mod control;
 mod tools;
+mod rss;
 
 use std::io::{self, Write, stdout};
 use termion::input::TermRead;

@@ -5,5 +5,8 @@ edition = "2021"
 
 [dependencies]
 once_cell = "1.19.0"
+reqwest = "0.11.26"
+rss = "2.0.7"
 signal-hook = "0.3.17"
 termion = "3.0.0"
+tokio = "1.36.0"
