@@ -28,6 +28,7 @@ pub struct Session {
 enum CurrentScreen {
     SPLASH,
     HOME,
+    RSS,
 }
 enum ColourScheme {
     LIGHT,

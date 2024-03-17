@@ -13,13 +13,12 @@ pub async fn request() -> Result<Channel, Box<dyn Error>> {
    Ok(channel)
 }
 
-async fn get_feed() -> Result<&'static[Item], Box<dyn Error>> {
+async fn get_feed() -> Result<Vec<Item>, Box<dyn Error>> {
     let channel = request().await;
     match channel {
         Ok(channel) => { 
-            let feed = channel.items();
-            let test = feed.clone();
-            Ok(test)
+            let temp = channel.into_items();
+            Ok(temp)
 
             // let mut i = 0;
             // loop {

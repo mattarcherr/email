@@ -1,4 +1,4 @@
-use crate::tools;
+use crate::tools::{draw_line_h, draw_line_v};
 
 use crate::SESSION;
 use crate::{color, cursor};
@@ -38,6 +38,10 @@ pub fn draw_window()
         CurrentScreen::HOME   => {
             std::mem::drop(c_s);
             draw_home(colours);
+        },
+        CurrentScreen::RSS    => {
+            std::mem::drop(c_s);
+            draw_rss(colours);
         }
     }
 }
@@ -61,6 +65,17 @@ fn draw_home(colours: Colours)
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
 
     println!("{}{}HOME!", colours.text, cursor::Goto(x/2-6, y/2) );
-    tools::draw_line_v(10, 1, 10);
-    tools::draw_line_h(30, 1, 61);
+    draw_line_v(10, 1, 10);
+    draw_line_h(30, 1, 61);
+}
+
+fn draw_rss(colours: Colours)
+{
+    println!("{}{}", colours.bg, termion::clear::All);  // clear screen
+
+    let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
+
+    println!("{}{}RSS!", colours.text, cursor::Goto(x/2-6, y/2) );
+    draw_line_h(y/6, 0, x+1); 
+    draw_line_v(x/6, 0, y); 
 }
