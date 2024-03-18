@@ -1,14 +1,37 @@
+mod draw;
+
 use console::Term;
+
+use std::sync::Mutex;
+use once_cell::sync::Lazy;
+
+pub struct Session {
+    current_screen: CurrentScreen,
+    colour_scheme: ColourScheme,
+}
+enum CurrentScreen {
+    SPLASH,
+    HOME,
+    RSS,
+}
+enum ColourScheme {
+    LIGHT,
+    DARK,
+}
+static SESSION: Lazy<Mutex<Session>> = Lazy::new(
+    || Mutex::new(
+        Session {
+            current_screen: CurrentScreen::SPLASH,
+            colour_scheme: ColourScheme::LIGHT,
+        }
+    )
+);
 
 fn main() {
     let term = Term::stdout();
     term.set_title("Vimail");
-    println!("[107m[2J");
 
-    let (y, x) = term.size();
-
-    term.move_cursor_to(((x/2)-4).into(), (y/2).into()).unwrap();
-    println!("[30mTEST");
+    draw::draw_window();
 
     loop {
         if term.read_char().unwrap() == 'q' {
