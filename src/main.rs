@@ -1,9 +1,12 @@
 mod draw;
+mod control;
 
 use console::Term;
 
 use std::sync::Mutex;
 use once_cell::sync::Lazy;
+
+use crate::draw::draw_window;
 
 pub struct Session {
     current_screen: CurrentScreen,
@@ -38,6 +41,7 @@ fn main() {
             println!("[0m    [2J");
             break;
         }
+        else { control::switch_khit(term.read_char().unwrap())}
     }
 
 }

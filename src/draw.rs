@@ -5,6 +5,9 @@ use crate::{CurrentScreen, ColourScheme};
 
 pub fn draw_window() {
     let c_s = SESSION.lock().unwrap();
+
+    print!("[3J");
+
     // let colours: Colours;
 
     // match c_s.colour_scheme {
@@ -29,11 +32,11 @@ pub fn draw_window() {
         },
         CurrentScreen::HOME   => {
             std::mem::drop(c_s);
-            // draw_home();
+            draw_home();
         },
         CurrentScreen::RSS    => {
             std::mem::drop(c_s);
-            // draw_rss();
+            draw_rss();
         }
     }
 }
@@ -47,4 +50,24 @@ fn draw_splash() {
 
     term.move_cursor_to(((x/2)-4).into(), (y/2).into()).unwrap();
     println!("[30mSPLASH");
+}
+fn draw_home() {
+    let term = console::Term::stdout();
+
+    println!("[107m[2J");
+
+    let (y, x) = term.size();
+
+    term.move_cursor_to(((x/2)-4).into(), (y/2).into()).unwrap();
+    println!("[30mHOME");
+}
+fn draw_rss() {
+    let term = console::Term::stdout();
+
+    println!("[107m[2J");
+
+    let (y, x) = term.size();
+
+    term.move_cursor_to(((x/2)-4).into(), (y/2).into()).unwrap();
+    println!("[30mRSS");
 }
