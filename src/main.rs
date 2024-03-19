@@ -37,11 +37,12 @@ fn main() {
     draw::draw_window();
 
     loop {
-        if term.read_char().unwrap() == 'q' {
+        let c = term.read_char().unwrap();
+        if c == 'q' {
             println!("[0m    [2J");
             break;
         }
-        else { control::switch_khit(term.read_char().unwrap())}
+        else { control::switch_khit(c) }
     }
 
 }

@@ -6,7 +6,8 @@ use crate::{CurrentScreen, ColourScheme};
 pub fn draw_window() {
     let c_s = SESSION.lock().unwrap();
 
-    print!("[3J");
+    // Clear terminal
+    print!("c");
 
     // let colours: Colours;
 
