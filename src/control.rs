@@ -6,6 +6,9 @@ use termion::event::Key;
 pub fn switch_khit(c: Key) {
     let mut sess = SESSION.lock().unwrap();
     match sess.current_screen {
+
+        // SPLASH Controls
+
         CurrentScreen::SPLASH => {
 
             if c == Key::Char('b') {
@@ -31,6 +34,9 @@ pub fn switch_khit(c: Key) {
                 crate::draw_window();
             }
         },
+
+        // HOME Controls
+
         CurrentScreen::HOME   => {
 
             if c == Key::Char('b') {
@@ -51,6 +57,9 @@ pub fn switch_khit(c: Key) {
                 crate::draw_window();
             }
         }
+
+        // RSS Controls
+
         CurrentScreen::RSS    => {
 
             if c == Key::Char('b') {

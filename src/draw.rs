@@ -1,4 +1,4 @@
-use crate::tools::{draw_line_h, draw_line_v};
+use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box};
 
 use crate::SESSION;
 use crate::{color, cursor};
@@ -75,7 +75,8 @@ fn draw_rss(colours: Colours)
 
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
 
-    println!("{}{}RSS!", colours.text, cursor::Goto(x/2-6, y/2) );
-    draw_line_h(y/6, 0, x+1); 
-    draw_line_v(x/6, 0, y); 
+    draw_thick_line_h(y/6, 0, x+1); 
+    draw_thick_line_v(x/6, 2, y); 
+
+    draw_box((x/6)+10, (y/6)+1, (x*5/6)-18, 5);
 }
