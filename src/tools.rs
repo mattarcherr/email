@@ -10,12 +10,12 @@ pub fn draw_line_v (x: u16, start: u16, end: u16) {
 }
 pub fn draw_thick_line_h (y: u16, start: u16, end: u16) { 
     for i in start..end {
-        println!("{}{}", termion::cursor::Goto(start+i, y), "━"); 
+        println!("{}{}", termion::cursor::Goto(start+(end-i), y), "━"); 
     }
 }
 pub fn draw_thick_line_v (x: u16, start: u16, end: u16) {
     for i in start..end {
-        println!("{}{}", termion::cursor::Goto(x, start+i), "┃"); 
+        println!("{}{}", termion::cursor::Goto(x, start+(end-i)), "┃"); 
     }
 }
 pub fn draw_box (x: u16, y: u16, width: u16, height: u16) {

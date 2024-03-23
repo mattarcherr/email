@@ -2,6 +2,7 @@ mod draw;
 mod control;
 mod tools;
 mod rss;
+mod fileio;
 
 use std::io::{self, Write, stdout};
 use termion::input::TermRead;

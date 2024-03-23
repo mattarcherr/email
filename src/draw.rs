@@ -75,8 +75,29 @@ fn draw_rss(colours: Colours)
 
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
 
-    draw_thick_line_h(y/6, 0, x+1); 
-    draw_thick_line_v(x/6, 2, y); 
+    let menu_line =  x/6;
+    let title_line = y/6;
 
-    draw_box((x/6)+10, (y/6)+1, (x*5/6)-18, 5);
+    draw_thick_line_h(title_line, 0, x+1); 
+    draw_thick_line_v(menu_line, 1, y-1); 
+
+    let x_padding = x/14;
+    let box_height = 5;
+    let box_width = x-menu_line-(x_padding*2-2);
+
+    let mut i = 0;
+    loop {
+        let box_y = (i*6)+title_line+2;
+        let box_x = menu_line+x_padding;
+
+        if box_y >= y-5 { break; }
+
+        draw_box(box_x, box_y, box_width, box_height);
+
+        println!("{}{}", cursor::Goto(box_x+1, box_y+1), "BBC UK");
+        println!("{}{}", cursor::Goto(box_x+box_width-8, box_y+1), "22/05/24");
+
+        i += 1;
+        break;
+    }
 }
