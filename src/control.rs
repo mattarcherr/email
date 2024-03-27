@@ -11,6 +11,8 @@ pub fn switch_khit(c: Key) {
 
         CurrentScreen::SPLASH => {
 
+            // if c == Key::Char('0') {
+            // }
             if c == Key::Char('b') {
                 sess.current_screen = CurrentScreen::HOME;
                 std::mem::drop(sess);

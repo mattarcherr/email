@@ -12,6 +12,7 @@ use termion::raw::IntoRawMode;
 use signal_hook::consts::SIGWINCH;
 use signal_hook::iterator::Signals;
 use std::thread;
+use serde_json;
 
 use std::sync::Mutex;
 use once_cell::sync::Lazy;
@@ -23,6 +24,7 @@ extern crate termion;
 
 pub struct Session {
     current_screen: CurrentScreen,
+    popup: PopUp,
     colour_scheme: ColourScheme,
 }
 
@@ -30,6 +32,10 @@ enum CurrentScreen {
     SPLASH,
     HOME,
     RSS,
+}
+enum PopUp {
+    None,
+    NEW_ACC,
 }
 enum ColourScheme {
     LIGHT,
@@ -40,15 +46,15 @@ static SESSION: Lazy<Mutex<Session>> = Lazy::new(
     || Mutex::new(
         Session {
             current_screen: CurrentScreen::SPLASH,
+            popup: PopUp::None,
             colour_scheme: ColourScheme::LIGHT,
         }
     )
 );
 
 fn main() -> io::Result<()> {
-    // let stdin = std::io::stdin();
-    // let mut stdin = stdin.lock();
 
+    fileio::read_save_file();
 
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor

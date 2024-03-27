@@ -9,7 +9,6 @@ struct Colours {
     text: &'static str,
 }
 
-
 pub fn draw_window()
 {
     let c_s = SESSION.lock().unwrap();
@@ -32,30 +31,30 @@ pub fn draw_window()
 
     match c_s.current_screen {
         CurrentScreen::SPLASH => {
-            std::mem::drop(c_s);
             draw_splash(colours);
         },
         CurrentScreen::HOME   => {
-            std::mem::drop(c_s);
             draw_home(colours);
         },
         CurrentScreen::RSS    => {
-            std::mem::drop(c_s);
             draw_rss(colours);
         }
     }
+
+    std::mem::drop(c_s);
 }
 
 
 fn draw_splash(colours: Colours)
 {
     println!("{}{}", colours.bg, termion::clear::All);  // clear screen
-    // println!("\x1b[47m"); // bg colour white
-    // println!("\x1b[2J");  // clear screen
 
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
 
-    println!("{}{}HELLO WORLD!", colours.text, cursor::Goto(x/2-6, y/2) );
+    println!("{}{}VIMAIL", colours.text, cursor::Goto(x/2-3, y/2) );
+
+
+    println!("{}{}0 - Create new account", colours.text, cursor::Goto(x/2-11, y/2+5) );
 }
 
 fn draw_home(colours: Colours)
@@ -94,8 +93,8 @@ fn draw_rss(colours: Colours)
 
         draw_box(box_x, box_y, box_width, box_height);
 
-        println!("{}{}", cursor::Goto(box_x+1, box_y+1), "BBC UK");
-        println!("{}{}", cursor::Goto(box_x+box_width-8, box_y+1), "22/05/24");
+        println!("{}{}{}", colours.text, cursor::Goto(box_x+1, box_y+1), "BBC UK");
+        println!("{}{}{}", colours.text, cursor::Goto(box_x+box_width-8, box_y+1), "22/05/24");
 
         i += 1;
         break;
