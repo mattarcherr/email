@@ -26,6 +26,7 @@ pub struct Session {
     current_screen: CurrentScreen,
     popup: PopUp,
     colour_scheme: ColourScheme,
+    account_names: Vec<String>,
 }
 
 enum CurrentScreen {
@@ -48,13 +49,13 @@ static SESSION: Lazy<Mutex<Session>> = Lazy::new(
             current_screen: CurrentScreen::SPLASH,
             popup: PopUp::None,
             colour_scheme: ColourScheme::LIGHT,
+            account_names: Vec::new(),
         }
     )
 );
 
 fn main() -> io::Result<()> {
 
-    fileio::read_save_file();
 
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor

@@ -6,32 +6,53 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug)]
-struct Accounts {
-    name: String,
-    email: String,
+pub struct Account {
+    pub name: String,
+    pub email: String,
 }
 
-pub fn read_save_file() {
-
-    let mut file: File = match File::open("save.json") {
+pub fn get_account_names() -> Vec<String> {
+    let file: File = match File::open("save.json") {
         Ok(v) => v,
-        Err(e) => create_save_file(),
+        Err(_) => create_save_file(),
     };
 
-    read_accounts(file);
+    let mut account_names: Vec<String> = Vec::new();
+
+    match read_accounts(file) {
+        Some(accounts) => { 
+            for account in accounts {
+                account_names.push(account.name);
+            }
+        },
+        None => {},
+    }
+    account_names
+}
+
+pub fn read_save_file() -> Option<Vec<Account>>{
+
+    let file: File = match File::open("save.json") {
+        Ok(v) => v,
+        Err(_) => create_save_file(),
+    };
+
+    read_accounts(file)
 }
 
 fn create_save_file() -> File {
     File::create("save.json").unwrap()
 }
 
-fn read_accounts(file: File) {
+fn read_accounts(file: File) -> Option<Vec<Account>>{
 
-    if file.metadata().unwrap().len() == 0 { return; }
-    let mut buf_reader = BufReader::new(file);
+    if file.metadata().unwrap().len() == 0 { return None; }
+    let buf_reader = BufReader::new(file);
+    let mut accounts: Vec<Account>; 
 
-    let accounts: Accounts = serde_json::from_reader(buf_reader).unwrap();
-    println!("{:#?}", accounts);
+    accounts = serde_json::from_reader(buf_reader).unwrap();
+
+    Some(accounts)
 }
 
 // fn write_accounts() {

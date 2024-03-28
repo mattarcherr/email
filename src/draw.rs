@@ -1,6 +1,6 @@
 use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box};
 
-use crate::SESSION;
+use crate::{fileio, SESSION};
 use crate::{color, cursor};
 use crate::{CurrentScreen, ColourScheme};
 
@@ -54,7 +54,13 @@ fn draw_splash(colours: Colours)
     println!("{}{}VIMAIL", colours.text, cursor::Goto(x/2-3, y/2) );
 
 
-    println!("{}{}0 - Create new account", colours.text, cursor::Goto(x/2-11, y/2+5) );
+    let mut i = 1;
+    for name in fileio::get_account_names().iter() {
+        let offset: u16 = 2+name.len() as u16;
+        println!("{}{}{i} - {name}", colours.text, cursor::Goto(x/2-offset, y/2+2+i) );
+        i += 1;
+    }
+    println!("{}{}0 - Create new account", colours.text, cursor::Goto(x/2-11, y/2+2+i) );
 }
 
 fn draw_home(colours: Colours)
