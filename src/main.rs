@@ -14,7 +14,7 @@ use signal_hook::iterator::Signals;
 use std::thread;
 use serde_json;
 
-use std::sync::Mutex;
+use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 
 use crate::draw::draw_window;
@@ -26,7 +26,7 @@ pub struct Session {
     current_screen: CurrentScreen,
     popup: PopUp,
     colour_scheme: ColourScheme,
-    account_names: Vec<String>,
+    file: Arc<Vec<fileio::Account>>,
 }
 
 enum CurrentScreen {
@@ -49,7 +49,7 @@ static SESSION: Lazy<Mutex<Session>> = Lazy::new(
             current_screen: CurrentScreen::SPLASH,
             popup: PopUp::None,
             colour_scheme: ColourScheme::LIGHT,
-            account_names: Vec::new(),
+            file: Arc::new(fileio::read_save_file()),
         }
     )
 );

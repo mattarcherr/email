@@ -1,6 +1,7 @@
 use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box};
 
-use crate::{fileio, SESSION};
+use std::sync::Arc;
+use crate::SESSION;
 use crate::{color, cursor};
 use crate::{CurrentScreen, ColourScheme};
 
@@ -12,6 +13,7 @@ struct Colours {
 pub fn draw_window()
 {
     let c_s = SESSION.lock().unwrap();
+
     let colours: Colours;
 
     match c_s.colour_scheme {
@@ -31,17 +33,18 @@ pub fn draw_window()
 
     match c_s.current_screen {
         CurrentScreen::SPLASH => {
+            std::mem::drop(c_s);
             draw_splash(colours);
         },
         CurrentScreen::HOME   => {
+            std::mem::drop(c_s);
             draw_home(colours);
         },
         CurrentScreen::RSS    => {
+            std::mem::drop(c_s);
             draw_rss(colours);
         }
     }
-
-    std::mem::drop(c_s);
 }
 
 
@@ -53,14 +56,18 @@ fn draw_splash(colours: Colours)
 
     println!("{}{}VIMAIL", colours.text, cursor::Goto(x/2-3, y/2) );
 
+    
+    let a = Arc::clone(&SESSION.lock().unwrap().file);
+
 
     let mut i = 1;
-    for name in fileio::get_account_names().iter() {
-        let offset: u16 = 2+name.len() as u16;
-        println!("{}{}{i} - {name}", colours.text, cursor::Goto(x/2-offset, y/2+2+i) );
+    for account in a.iter() {
+        let offset: u16 = account.name.len() as u16;
+        println!("{}{}{i} - {}", colours.text, cursor::Goto(x/2-offset, y/2+2+i), account.name );
         i += 1;
     }
     println!("{}{}0 - Create new account", colours.text, cursor::Goto(x/2-11, y/2+2+i) );
+    std::mem::drop(a);
 }
 
 fn draw_home(colours: Colours)
