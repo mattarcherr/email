@@ -47,6 +47,7 @@ static SESSION: Lazy<Mutex<Session>> = Lazy::new(
     || Mutex::new(
         Session {
             current_screen: CurrentScreen::SPLASH,
+            // popup: Arc::new(PopUp::None),
             popup: PopUp::None,
             colour_scheme: ColourScheme::LIGHT,
             file: Arc::new(fileio::read_save_file()),

@@ -1,6 +1,4 @@
-use crate::ColourScheme;
-use crate::SESSION;
-use crate::CurrentScreen;
+use crate::{SESSION, ColourScheme, CurrentScreen, PopUp};
 use termion::event::Key;
 
 pub fn switch_khit(c: Key) {
@@ -11,9 +9,12 @@ pub fn switch_khit(c: Key) {
 
         CurrentScreen::SPLASH => {
 
-            // if c == Key::Char('0') {
-            // }
-            if c == Key::Char('b') {
+            if c == Key::Char('0') {
+                sess.popup = PopUp::NEW_ACC;
+                std::mem::drop(sess);
+                crate::draw_window();
+            }
+            else if c == Key::Char('b') {
                 sess.current_screen = CurrentScreen::HOME;
                 std::mem::drop(sess);
                 crate::draw_window();
@@ -23,7 +24,7 @@ pub fn switch_khit(c: Key) {
                 std::mem::drop(sess);
                 crate::draw_window();
             }
-            else if c == Key::Char('c') {
+            else if c == Key::Char('n') {
                 match sess.colour_scheme {
                     ColourScheme::DARK => {
                         sess.colour_scheme = ColourScheme::LIGHT;

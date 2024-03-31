@@ -3,7 +3,7 @@ use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_
 use std::sync::Arc;
 use crate::SESSION;
 use crate::{color, cursor};
-use crate::{CurrentScreen, ColourScheme};
+use crate::{CurrentScreen, ColourScheme, PopUp};
 
 struct Colours {
     bg: &'static str,
@@ -43,6 +43,14 @@ pub fn draw_window()
         CurrentScreen::RSS    => {
             std::mem::drop(c_s);
             draw_rss(colours);
+        }
+    }
+
+    // Need to borrow new SESSION variable
+    match SESSION.lock().unwrap().popup {
+        PopUp::None => {},
+        PopUp::NEW_ACC => {
+            popup_draw_new_acc();
         }
     }
 }
@@ -112,4 +120,11 @@ fn draw_rss(colours: Colours)
         i += 1;
         break;
     }
+}
+
+fn popup_draw_new_acc() {
+    let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
+
+    // draw_box(x*(5/3), y*(5/3), x/3, y/3);
+    draw_box(30, 8, 150, 20);
 }
