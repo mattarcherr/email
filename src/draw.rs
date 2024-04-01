@@ -1,10 +1,11 @@
-use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box};
+use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box, draw_thick_box};
 
 use std::sync::Arc;
 use crate::SESSION;
 use crate::{color, cursor};
 use crate::{CurrentScreen, ColourScheme, PopUp};
 
+#[derive(Copy, Clone)]
 struct Colours {
     bg: &'static str,
     text: &'static str,
@@ -50,7 +51,7 @@ pub fn draw_window()
     match SESSION.lock().unwrap().popup {
         PopUp::None => {},
         PopUp::NEW_ACC => {
-            popup_draw_new_acc();
+            popup_draw_new_acc(colours);
         }
     }
 }
@@ -122,9 +123,10 @@ fn draw_rss(colours: Colours)
     }
 }
 
-fn popup_draw_new_acc() {
+fn popup_draw_new_acc(colours: Colours) {
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
+    println!("{}{}{x},{y}", colours.text, cursor::Goto(x/2-6, y/2) );
 
     // draw_box(x*(5/3), y*(5/3), x/3, y/3);
-    draw_box(30, 8, 150, 20);
+    draw_thick_box(18, 8, 127, 30);
 }

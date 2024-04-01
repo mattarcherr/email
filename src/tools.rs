@@ -32,3 +32,17 @@ pub fn draw_box (x: u16, y: u16, width: u16, height: u16) {
 
     println!("{}{}", termion::cursor::Goto(x+width, y+height), "┘");
 }
+pub fn draw_thick_box (x: u16, y: u16, width: u16, height: u16) {
+    draw_thick_line_h(y, x, x+width);
+    draw_thick_line_h(y+height, x, x+width);
+    draw_thick_line_v(x, y, y+height);
+    draw_thick_line_v(x+width, y, y+height);
+
+    println!("{}{}", termion::cursor::Goto(x, y), "┏");
+
+    println!("{}{}", termion::cursor::Goto(x+width, y), "┓");
+
+    println!("{}{}", termion::cursor::Goto(x, y+height), "┗");
+
+    println!("{}{}", termion::cursor::Goto(x+width, y+height), "┛");
+}
