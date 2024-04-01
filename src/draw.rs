@@ -1,4 +1,7 @@
-use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box, draw_thick_box};
+use termion::clear;
+use termion::cursor::Goto;
+
+use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box, draw_thick_box, clear_area};
 
 use std::sync::Arc;
 use crate::SESSION;
@@ -127,6 +130,12 @@ fn popup_draw_new_acc(colours: Colours) {
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
     println!("{}{}{x},{y}", colours.text, cursor::Goto(x/2-6, y/2) );
 
-    // draw_box(x*(5/3), y*(5/3), x/3, y/3);
-    draw_thick_box(18, 8, 127, 30);
+    let xpos = x/8;
+    let ypos = y/5;
+    let width = x-(x*2/8);
+    let height = y-(y*2/5);
+
+
+    draw_thick_box(xpos, ypos, width, height);
+    clear_area(xpos+1, ypos+1, width-1, height-1, colours.bg);
 }

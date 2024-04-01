@@ -46,3 +46,12 @@ pub fn draw_thick_box (x: u16, y: u16, width: u16, height: u16) {
 
     println!("{}{}", termion::cursor::Goto(x+width, y+height), "┛");
 }
+
+pub fn clear_area(x: u16, y: u16, width: u16, height: u16, colour: &str) {
+
+    for ypos in 0..height {
+        for xpos in 0..width {
+            println!("{}{} ", termion::cursor::Goto(x+xpos, y+ypos), colour)
+        }
+    }
+}
