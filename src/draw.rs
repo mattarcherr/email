@@ -51,9 +51,11 @@ pub fn draw_window()
     }
 
     // Need to borrow new SESSION variable
-    match SESSION.lock().unwrap().popup {
-        PopUp::None => {},
+    let c_s = SESSION.lock().unwrap();
+    match c_s.popup {
+        PopUp::NONE => {},
         PopUp::NEW_ACC => {
+            std::mem::drop(c_s);
             popup_draw_new_acc(colours);
         }
     }
@@ -69,17 +71,17 @@ fn draw_splash(colours: Colours)
     println!("{}{}VIMAIL", colours.text, cursor::Goto(x/2-3, y/2) );
 
     
-    let a = Arc::clone(&SESSION.lock().unwrap().file);
+    let accounts = Arc::clone(&SESSION.lock().unwrap().accounts);
 
 
     let mut i = 1;
-    for account in a.iter() {
+    for account in accounts.iter() {
         let offset: u16 = account.name.len() as u16;
         println!("{}{}{i} - {}", colours.text, cursor::Goto(x/2-offset, y/2+2+i), account.name );
         i += 1;
     }
     println!("{}{}0 - Create new account", colours.text, cursor::Goto(x/2-11, y/2+2+i) );
-    std::mem::drop(a);
+    std::mem::drop(accounts);
 }
 
 fn draw_home(colours: Colours)
@@ -130,12 +132,28 @@ fn popup_draw_new_acc(colours: Colours) {
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
     println!("{}{}{x},{y}", colours.text, cursor::Goto(x/2-6, y/2) );
 
-    let xpos = x/8;
-    let ypos = y/5;
+    let sess = SESSION.lock().unwrap();
+
+    let xpos = x/8; 
+    let ypos = y/5; // Top left of popup (x/8, y/5)
     let width = x-(x*2/8);
     let height = y-(y*2/5);
 
-
     draw_thick_box(xpos, ypos, width, height);
     clear_area(xpos+1, ypos+1, width-1, height-1, colours.bg);
+
+    println!("{}{}Account name:", colours.text, cursor::Goto(xpos+(width*2/4)-5, ypos+(height/5)-2));
+    if sess.selection == 1 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
+    draw_line_h(ypos+(height/5), xpos+(width*1/4), xpos+(width*3/4));
+    println!("{}{}Account email:", colours.text, cursor::Goto(xpos+(width*2/4)-6, ypos+(height/3)-2));
+    if sess.selection == 2 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
+    draw_line_h(ypos+(height/3), xpos+(width*1/4), xpos+(width*3/4));
+
+    if sess.selection == 3 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
+    draw_box(xpos+(width*1/4), ypos+(height*3/5), width/2, 2);
+    println!("{}{}Create new account", colours.text, cursor::Goto(xpos+(width*2/4)-9, ypos+(height*3/5)+1));
+    if sess.selection == 4 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
+    draw_box(xpos+(width*1/4), ypos+(height*4/5), width/2, 2);
+    println!("{}{}Delete account", colours.text, cursor::Goto(xpos+(width*2/4)-7, ypos+(height*4/5)+1));
+    std::mem::drop(sess);
 }

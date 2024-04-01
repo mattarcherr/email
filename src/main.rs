@@ -5,6 +5,7 @@ mod rss;
 mod fileio;
 
 use std::io::{self, Write, stdout};
+use signal_hook::low_level::exit;
 use termion::input::TermRead;
 use termion::color;
 use termion::cursor;
@@ -26,7 +27,8 @@ pub struct Session {
     current_screen: CurrentScreen,
     popup: PopUp,
     colour_scheme: ColourScheme,
-    file: Arc<Vec<fileio::Account>>,
+    accounts: Arc<Vec<fileio::Account>>,
+    selection: u8,
 }
 
 enum CurrentScreen {
@@ -35,7 +37,7 @@ enum CurrentScreen {
     RSS,
 }
 enum PopUp {
-    None,
+    NONE,
     NEW_ACC,
 }
 enum ColourScheme {
@@ -47,16 +49,15 @@ static SESSION: Lazy<Mutex<Session>> = Lazy::new(
     || Mutex::new(
         Session {
             current_screen: CurrentScreen::SPLASH,
-            // popup: Arc::new(PopUp::None),
-            popup: PopUp::None,
+            popup: PopUp::NONE,
             colour_scheme: ColourScheme::LIGHT,
-            file: Arc::new(fileio::read_save_file()),
+            accounts: Arc::new(fileio::read_save_file()),
+            selection: 0,
         }
     )
 );
 
 fn main() -> io::Result<()> {
-
 
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor
