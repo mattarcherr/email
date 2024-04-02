@@ -12,23 +12,23 @@ pub fn switch_khit(c: char) {
                 std::mem::drop(sess);
                 crate::draw_window();
             }
-            // else if c == 'R' {
-            //     sess.current_screen = CurrentScreen::RSS;
-            //     std::mem::drop(sess);
-            //     crate::draw_window();
-            // }
-            // else if c == 'c' {
-            //     match sess.colour_scheme {
-            //         ColourScheme::DARK => {
-            //             sess.colour_scheme = ColourScheme::LIGHT;
-            //         },
-            //         ColourScheme::LIGHT => {
-            //             sess.colour_scheme = ColourScheme::DARK;
-            //         }
-            //     }
-            //     std::mem::drop(sess);
-            //     crate::draw_window();
-            // }
+            else if c == 'R' {
+                sess.current_screen = CurrentScreen::RSS;
+                std::mem::drop(sess);
+                crate::draw_window();
+            }
+            else if c == 'c' {
+                match sess.colour_scheme {
+                    ColourScheme::DARK => {
+                        sess.colour_scheme = ColourScheme::LIGHT;
+                    },
+                    ColourScheme::LIGHT => {
+                        sess.colour_scheme = ColourScheme::DARK;
+                    }
+                }
+                std::mem::drop(sess);
+                crate::draw_window();
+            }
         },
         CurrentScreen::HOME   => {
 
