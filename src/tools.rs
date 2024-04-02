@@ -65,11 +65,12 @@ pub fn draw_thick_box(x: u16, y: u16, width: u16, height: u16, colour: console::
     println!("{}", colour.clone().apply_to("┛"));
 }
 
-// pub fn clear_area(x: u16, y: u16, width: u16, height: u16, colour: &str) {
-
-//     for ypos in 0..height {
-//         for xpos in 0..width {
-//             println!("{}{} ", termion::cursor::Goto(x+xpos, y+ypos), colour)
-//         }
-//     }
-// }
+pub fn clear_area(x: u16, y: u16, width: u16, height: u16, colour: console::Style) {
+    let term = console::Term::stdout();
+    for ypos in 0..height {
+        for xpos in 0..width {
+            term.move_cursor_to((x+xpos).into(), (y+ypos).into()).unwrap();
+            println!("{}", colour.apply_to(" "));
+        }
+    }
+}

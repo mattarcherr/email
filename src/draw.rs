@@ -3,8 +3,8 @@ use std::hint::black_box;
 use console::Style;
 
 use crate::SESSION;
-use crate::{CurrentScreen, ColourScheme};
-use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box};
+use crate::{CurrentScreen, ColourScheme, PopUp};
+use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box, draw_thick_box, clear_area};
 // use crate::console::Colours;
 // Style::Color::Fg
 
@@ -48,6 +48,15 @@ pub fn draw_window() {
         CurrentScreen::RSS    => {
             std::mem::drop(c_s);
             draw_rss(&colours);
+        }
+    }
+        // Need to borrow new SESSION variable
+    let c_s = SESSION.lock().unwrap();
+    match c_s.popup {
+        PopUp::NONE => {},
+        PopUp::NewAcc => {
+            std::mem::drop(c_s);
+            popup_draw_new_acc(colours);
         }
     }
 }
@@ -109,3 +118,50 @@ fn draw_rss(colours: &Colours) {
     }
 }
 
+fn popup_draw_new_acc(colours: Colours) {
+    let term = console::Term::stdout();
+    let (y, x) = term.size();
+
+    let sess = SESSION.lock().unwrap();
+
+    let xpos = x/8; 
+    let ypos = y/5; // Top left of popup (x/8, y/5)
+    let width = x-(x*2/8);
+    let height = y-(y*2/5);
+
+    draw_thick_box(xpos, ypos, width, height, colours.text.clone());
+    clear_area(xpos+1, ypos+1, width-1, height-1, colours.bg);
+
+    term.move_cursor_to((xpos+(width*2/4)-5).into(), (ypos+(height/5)-2).into()).unwrap();
+    println!("{}", colours.text.clone().apply_to("Account name:"));
+    if sess.selection == 1 { 
+        draw_line_h(ypos+(height/5), xpos+(width*1/4), xpos+(width*3/4), Style::new().red());
+    } else {
+        draw_line_h(ypos+(height/5), xpos+(width*1/4), xpos+(width*3/4), colours.text.clone());
+    }
+    term.move_cursor_to((xpos+(width*2/4)-6).into(), (ypos+(height/3)-2).into()).unwrap();
+    println!("{}", colours.text.clone().apply_to("Account email:"));
+    if sess.selection == 2 { 
+        draw_line_h(ypos+(height/3), xpos+(width*1/4), xpos+(width*3/4), Style::new().red());
+    } else { 
+        draw_line_h(ypos+(height/3), xpos+(width*1/4), xpos+(width*3/4), colours.text.clone());
+    }
+    
+    if sess.selection == 3 { 
+        draw_box(xpos+(width*1/4), ypos+(height*3/5), width/2, 2, Style::new().red());
+    } else { 
+        draw_box(xpos+(width*1/4), ypos+(height*3/5), width/2, 2, colours.text.clone());
+    }
+    term.move_cursor_to((xpos+(width*2/4)-9).into(), (ypos+(height*3/5)+1).into()).unwrap();
+    println!("{}", colours.text.clone().apply_to("Create new account"));
+
+    if sess.selection == 4 {
+        draw_box(xpos+(width*1/4), ypos+(height*4/5), width/2, 2, Style::new().red());
+    } else {
+        draw_box(xpos+(width*1/4), ypos+(height*4/5), width/2, 2, colours.text.clone());
+    }
+    term.move_cursor_to((xpos+(width*2/4)-7).into(), (ypos+(height*4/5)+1).into()).unwrap();
+    println!("{}", colours.text.clone().apply_to("Delete account"));
+
+    std::mem::drop(sess);
+}

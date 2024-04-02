@@ -1,6 +1,5 @@
-use crate::ColourScheme;
+use crate::{ColourScheme, CurrentScreen, PopUp};
 use crate::SESSION;
-use crate::CurrentScreen;
 
 pub fn switch_khit(c: char) {
     let mut sess = SESSION.lock().unwrap();
@@ -22,7 +21,17 @@ pub fn switch_khit(c: char) {
         match sess.current_screen {
             CurrentScreen::SPLASH => {
 
-                if c == 'b' {
+                if c == '0' {
+                    match sess.popup { 
+                        PopUp::NONE => {
+                            sess.popup = PopUp::NewAcc;
+                            std::mem::drop(sess);
+                            crate::draw_window();
+                        }
+                        _ => {}
+                    }
+                }
+                else if c == 'b' {
                     sess.current_screen = CurrentScreen::HOME;
                     std::mem::drop(sess);
                     crate::draw_window();
