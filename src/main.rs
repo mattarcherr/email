@@ -1,5 +1,6 @@
 mod draw;
 mod control;
+mod tools;
 
 use console::Term;
 
