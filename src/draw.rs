@@ -76,14 +76,6 @@ fn draw_home(colours: &Colours) {
 fn draw_rss(colours: &Colours) {
     let term = console::Term::stdout();
 
-    // println!("{}", colours.bg.apply_to("[2J"));
-
-    // let (y, x) = term.size();
-
-    // term.move_cursor_to(((x/2)-4).into(), (y/2).into()).unwrap();
-    // println!("{}", colours.text.apply_to("RSS"));
-
-
     println!("{}", colours.bg.apply_to("[2J")); // Clear screen
 
     let (y, x) = term.size();
