@@ -54,10 +54,14 @@ pub fn draw_window()
     let c_s = SESSION.lock().unwrap();
     match c_s.popup {
         PopUp::NONE => {},
-        PopUp::NEW_ACC => {
+        PopUp::NewAcc => {
             std::mem::drop(c_s);
             popup_draw_new_acc(colours);
         }
+        PopUp::DelAcc => {
+            std::mem::drop(c_s);
+            popup_draw_del_acc(colours);
+        },
     }
 }
 
@@ -130,8 +134,6 @@ fn draw_rss(colours: Colours)
 
 fn popup_draw_new_acc(colours: Colours) {
     let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
-    println!("{}{}{x},{y}", colours.text, cursor::Goto(x/2-6, y/2) );
-
     let sess = SESSION.lock().unwrap();
 
     let xpos = x/8; 
@@ -155,5 +157,45 @@ fn popup_draw_new_acc(colours: Colours) {
     if sess.selection == 4 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
     draw_box(xpos+(width*1/4), ypos+(height*4/5), width/2, 2);
     println!("{}{}Delete account", colours.text, cursor::Goto(xpos+(width*2/4)-7, ypos+(height*4/5)+1));
+    std::mem::drop(sess);
+}
+fn popup_draw_del_acc(colours: Colours) {
+    let (x, y): (u16, u16) = termion::terminal_size().unwrap().into();
+    let sess = SESSION.lock().unwrap();
+
+    let xpos = x/8; 
+    let ypos = y/5; // Top left of popup (x/8, y/5)
+    let width = x-(x*2/8);
+    let height = y-(y*2/5);
+
+    draw_thick_box(xpos, ypos, width, height);
+    clear_area(xpos+1, ypos+1, width-1, height-1, colours.bg);
+
+    let box_width = width/5;
+    let box_height = 4;
+    let x_padding = width*2/5;
+
+
+    // let accounts = Arc::clone(&SESSION.lock().unwrap().accounts);
+    let accounts = Arc::clone(&sess.accounts);
+
+    let mut i = 0;
+    loop {
+        let box_y = (i*6)+ypos+2;
+        let box_x = xpos+x_padding;
+
+        let j: usize = i.into(); 
+        if j >= accounts.len() { break }
+        if box_y >= ypos+height-4 { break; }
+
+        draw_box(box_x, box_y, box_width, box_height);
+
+        println!("{}{}{}", colours.text, cursor::Goto(box_x+1, box_y+1), accounts[j].name);
+        println!("{}{}{}", colours.text, cursor::Goto(box_x+box_width-8, box_y+1), accounts[j].email);
+        // println!("{}{}{}", colours.text, cursor::Goto(box_x+1, box_y+1), "TEST");
+        // println!("{}{}{}", colours.text, cursor::Goto(box_x+box_width-8, box_y+1), "TWO");
+
+        i += 1;
+    }
     std::mem::drop(sess);
 }

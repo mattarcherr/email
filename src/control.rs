@@ -17,7 +17,7 @@ pub fn switch_khit(c: Key) {
                     if c == Key::Char('0') {
                         match sess.popup { 
                             PopUp::NONE => {
-                                sess.popup = PopUp::NEW_ACC;
+                                sess.popup = PopUp::NewAcc;
                                 std::mem::drop(sess);
                                 crate::draw_window();
                             }
@@ -43,11 +43,6 @@ pub fn switch_khit(c: Key) {
                                 sess.colour_scheme = ColourScheme::DARK;
                             }
                         }
-                        std::mem::drop(sess);
-                        crate::draw_window();
-                    }
-                    else if c == Key::Char('c') {
-                        sess.popup = PopUp::NONE;
                         std::mem::drop(sess);
                         crate::draw_window();
                     }
@@ -101,13 +96,40 @@ pub fn switch_khit(c: Key) {
             }
         },
         // Popup controls
-        PopUp::NEW_ACC => {
+        PopUp::NewAcc => {
+            // println!("{:#?}", c);
             if c == Key::Char('\t') {
-                if sess.selection == 4 { sess.selection = 0; }
-                else { sess.selection += 1; }
+                if sess.accounts.len() > 0 {
+                    if sess.selection >= 4 { sess.selection = 0; }
+                    else { sess.selection += 1; }
+                }
+                else {
+                    if sess.selection >= 3 { sess.selection = 0; }
+                    else { sess.selection += 1; }
+                }
+                std::mem::drop(sess);
+                crate::draw_window();
             } 
-            std::mem::drop(sess);
-            crate::draw_window();
-        }
+            else if c == Key::Char('\n') {
+                if sess.selection == 3 {}
+                if sess.selection == 4 {
+                    sess.popup = PopUp::DelAcc;
+                    std::mem::drop(sess);
+                    crate::draw_window();
+                } 
+            }
+            else if c == Key::Char('c') {
+                sess.popup = PopUp::NONE;
+                 std::mem::drop(sess);
+                 crate::draw_window();
+            }
+        },
+        PopUp::DelAcc => {
+            if c == Key::Char('c') {
+                sess.popup = PopUp::NONE;
+                 std::mem::drop(sess);
+                 crate::draw_window();
+            }
+        },
     }
 }

@@ -38,7 +38,8 @@ enum CurrentScreen {
 }
 enum PopUp {
     NONE,
-    NEW_ACC,
+    NewAcc,
+    DelAcc,
 }
 enum ColourScheme {
     LIGHT,
