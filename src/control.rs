@@ -1,4 +1,4 @@
-use crate::{SESSION, ColourScheme, CurrentScreen, PopUp};
+use crate::{Arc, fileio, ColourScheme, CurrentScreen, PopUp, SESSION};
 use signal_hook::low_level::exit;
 use termion::event::Key;
 
@@ -125,7 +125,22 @@ pub fn switch_khit(c: Key) {
             }
         },
         PopUp::DelAcc => {
-            if c == Key::Char('c') {
+            if c == Key::Char('\t') {
+                if sess.selection >= sess.accounts.len() as u8 { sess.selection = 0; }
+                else { sess.selection += 1; }
+                std::mem::drop(sess);
+                crate::draw_window();
+            } 
+            else if c == Key::Char('\n') {
+                if sess.selection <= sess.accounts.len() as u8 {
+                    sess.popup = PopUp::NONE;
+                    std::mem::drop(sess);
+                    crate::delete_account();
+                    // SESSION.lock().unwrap().accounts = Arc::new(fileio::read_save_file());
+                    crate::draw_window();
+                }
+            }
+            else if c == Key::Char('c') {
                 sess.popup = PopUp::NONE;
                  std::mem::drop(sess);
                  crate::draw_window();

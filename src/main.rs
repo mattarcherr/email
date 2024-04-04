@@ -5,10 +5,8 @@ mod rss;
 mod fileio;
 
 use std::io::{self, Write, stdout};
-use signal_hook::low_level::exit;
 use termion::input::TermRead;
-use termion::color;
-use termion::cursor;
+use termion::{color, cursor};
 use termion::raw::IntoRawMode;
 use signal_hook::consts::SIGWINCH;
 use signal_hook::iterator::Signals;
@@ -19,6 +17,7 @@ use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 
 use crate::draw::draw_window;
+use crate::fileio::delete_account;
 
 extern crate termion;
 

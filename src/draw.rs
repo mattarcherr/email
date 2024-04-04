@@ -171,14 +171,16 @@ fn popup_draw_del_acc(colours: Colours) {
     draw_thick_box(xpos, ypos, width, height);
     clear_area(xpos+1, ypos+1, width-1, height-1, colours.bg);
 
-    let box_width = width/5;
+    let box_width = width*2/5;
     let box_height = 4;
-    let x_padding = width*2/5;
+    let x_padding = width*3/10;
 
 
     // let accounts = Arc::clone(&SESSION.lock().unwrap().accounts);
     let accounts = Arc::clone(&sess.accounts);
 
+    println!("SELCTION: {}", sess.selection);
+    println!("COUNT: {}", sess.accounts.len());
     let mut i = 0;
     loop {
         let box_y = (i*6)+ypos+2;
@@ -188,12 +190,11 @@ fn popup_draw_del_acc(colours: Colours) {
         if j >= accounts.len() { break }
         if box_y >= ypos+height-4 { break; }
 
+        if sess.selection == i as u8 { println!("{}", color::Red.fg_str()); } else { println!("{}", colours.text); }
         draw_box(box_x, box_y, box_width, box_height);
 
-        println!("{}{}{}", colours.text, cursor::Goto(box_x+1, box_y+1), accounts[j].name);
-        println!("{}{}{}", colours.text, cursor::Goto(box_x+box_width-8, box_y+1), accounts[j].email);
-        // println!("{}{}{}", colours.text, cursor::Goto(box_x+1, box_y+1), "TEST");
-        // println!("{}{}{}", colours.text, cursor::Goto(box_x+box_width-8, box_y+1), "TWO");
+        println!("{}{}{}", colours.text, cursor::Goto(1+box_x+box_width/2-(accounts[j].name.len() as u16/2), box_y+1), accounts[j].name);
+        println!("{}{}{}", colours.text, cursor::Goto(1+box_x+box_width/2-(accounts[j].email.len() as u16/2), box_y+3), accounts[j].email);
 
         i += 1;
     }

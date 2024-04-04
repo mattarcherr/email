@@ -1,6 +1,8 @@
+use crate::{SESSION, Arc};
 use std::fs::File;
-use std::io::BufReader;
+use std::io::{BufReader, BufWriter};
 use std::io::prelude::*;
+use std::ops::DerefMut;
 use std::ptr::null;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -25,7 +27,22 @@ pub struct Account {
 //    }
 //    account_names
 // }
+pub fn create_account(account: Account) {
+}
+pub fn delete_account() {
+    let mut sess = SESSION.lock().unwrap();
+    let i = sess.selection.clone();
+    let sess_accounts = Arc::get_mut(&mut sess.accounts).unwrap();
 
+    sess_accounts.remove(i as usize);
+    write_accounts(sess_accounts).unwrap();
+
+    // let a = Arc::new(sess_accounts);
+    // let b = Arc::clone(*a);
+    // let c = Arc::new(
+    // sess.accounts = b;
+    std::mem::drop(sess);
+}
 pub fn read_save_file() -> Vec<Account>{
 
     let file: File = match File::open("save.json") {
@@ -51,8 +68,13 @@ fn read_accounts(file: File) -> Vec<Account>{
     accounts
 }
 
-// fn write_accounts() {
-//
-//     file.write(&json_data.to_string().as_bytes());
-//     serde_json::from_str(r#"{ "accounts" }"#)
-// }
+fn write_accounts(accounts: &Vec<Account>) -> std::io::Result<()> {
+    let file = match File::create("save.json") {
+        Ok(v) => v,
+        Err(_) => create_save_file(),
+    };
+    let mut writer = BufWriter::new(file);
+    serde_json::to_writer(&mut writer, &accounts)?;
+    writer.flush()?;
+    Ok(())
+}
