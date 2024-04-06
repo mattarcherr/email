@@ -4,22 +4,16 @@ mod tools;
 mod rss;
 mod fileio;
 
-use std::io::{self, Write, stdout};
-use termion::input::TermRead;
-use termion::{color, cursor};
-use termion::raw::IntoRawMode;
-use signal_hook::consts::SIGWINCH;
-use signal_hook::iterator::Signals;
-use std::thread;
-use serde_json;
+use std::{io, thread, sync::{Arc, Mutex}};
+use termion::{color, cursor, input::TermRead};
+use signal_hook::{consts::SIGWINCH, iterator::Signals};
 
-use std::sync::{Arc, Mutex};
 use once_cell::sync::Lazy;
 
 use crate::draw::draw_window;
 use crate::fileio::delete_account;
 
-extern crate termion;
+// extern crate termion;
 
 
 pub struct Session {
@@ -62,9 +56,10 @@ fn main() -> io::Result<()> {
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor
     // Enter raw mode
-    let mut stdout = stdout().into_raw_mode()?;
-    write!(stdout, "").unwrap();
-    stdout.flush().unwrap();
+    crossterm::terminal::enable_raw_mode().unwrap();
+    // let mut stdout = stdout().into_raw_mode()?;
+    // write!(stdout, "").unwrap();
+    // stdout.flush().unwrap();
 
 
     // Update on window size change (SIGWINCH)

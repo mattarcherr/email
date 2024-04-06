@@ -1,12 +1,9 @@
-use termion::clear;
-use termion::cursor::Goto;
-
 use crate::tools::{draw_line_h, draw_line_v, draw_thick_line_h, draw_thick_line_v, draw_box, draw_thick_box, clear_area};
 
 use std::sync::Arc;
-use crate::SESSION;
-use crate::{color, cursor};
-use crate::{CurrentScreen, ColourScheme, PopUp};
+use crate::{SESSION,
+            color, cursor,
+            CurrentScreen, ColourScheme, PopUp};
 
 #[derive(Copy, Clone)]
 struct Colours {

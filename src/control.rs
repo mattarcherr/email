@@ -1,5 +1,4 @@
-use crate::{Arc, fileio, ColourScheme, CurrentScreen, PopUp, SESSION};
-use signal_hook::low_level::exit;
+use crate::{fileio, tools, ColourScheme, CurrentScreen, PopUp, SESSION};
 use termion::event::Key;
 
 pub fn switch_khit(c: Key) {
@@ -111,8 +110,21 @@ pub fn switch_khit(c: Key) {
                 crate::draw_window();
             } 
             else if c == Key::Char('\n') {
-                if sess.selection == 3 {}
-                if sess.selection == 4 {
+                if sess.selection == 1 {
+                    tools::editor_input();
+                    std::mem::drop(sess);
+                }
+                else if sess.selection == 3 {
+                    sess.popup = PopUp::NONE;
+                    let a = fileio::Account {
+                        name: String::from("test"),
+                        email: String::from("test@email.com")
+                    };
+                    std::mem::drop(sess);
+                    crate::fileio::create_account(a);
+                    crate::draw_window();
+                }
+                else if sess.selection == 4 {
                     sess.popup = PopUp::DelAcc;
                     std::mem::drop(sess);
                     crate::draw_window();

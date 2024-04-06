@@ -1,8 +1,5 @@
 use std::error::Error;
-use rss::Channel;
-use rss::Item;
-
-
+use rss::{Channel, Item};
 
 pub async fn request() -> Result<Channel, Box<dyn Error>> {
    let content = reqwest::get("https://feeds.bbci.co.uk/news/uk/rss.xml")

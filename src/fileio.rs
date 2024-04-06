@@ -1,11 +1,7 @@
 use crate::{SESSION, Arc};
 use std::fs::File;
-use std::io::{BufReader, BufWriter};
-use std::io::prelude::*;
-use std::ops::DerefMut;
-use std::ptr::null;
+use std::io::{BufReader, BufWriter, prelude::*};
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Account {
@@ -28,6 +24,15 @@ pub struct Account {
 //    account_names
 // }
 pub fn create_account(account: Account) {
+    let mut sess = SESSION.lock().unwrap();
+    let i = sess.selection.clone();
+    let sess_accounts = Arc::get_mut(&mut sess.accounts).unwrap();
+
+
+    sess_accounts.push(account);
+    write_accounts(sess_accounts).unwrap();
+
+    std::mem::drop(sess);
 }
 pub fn delete_account() {
     let mut sess = SESSION.lock().unwrap();
@@ -37,10 +42,6 @@ pub fn delete_account() {
     sess_accounts.remove(i as usize);
     write_accounts(sess_accounts).unwrap();
 
-    // let a = Arc::new(sess_accounts);
-    // let b = Arc::clone(*a);
-    // let c = Arc::new(
-    // sess.accounts = b;
     std::mem::drop(sess);
 }
 pub fn read_save_file() -> Vec<Account>{
