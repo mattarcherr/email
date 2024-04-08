@@ -59,10 +59,10 @@ pub fn clear_area(x: u16, y: u16, width: u16, height: u16, colour: &str) {
 }
 
 pub fn editor_input() {
-    crossterm::terminal::disable_raw_mode().unwrap();
+    // crossterm::terminal::disable_raw_mode().unwrap();
     let template = "Fill in the blank: Hello, _____!";
     let edited = edit::edit_file(template).unwrap();
-    crossterm::terminal::enable_raw_mode().unwrap();
+    // crossterm::terminal::enable_raw_mode().unwrap();
     // println!("after editing: '{}'", edited);
     // let editor = var("EDITOR").unwrap();
     // let mut file_path = temp_dir();

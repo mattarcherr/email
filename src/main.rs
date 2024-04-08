@@ -4,17 +4,12 @@ mod tools;
 mod rss;
 mod fileio;
 
-use std::{io, thread, sync::{Arc, Mutex}};
-use termion::{color, cursor, input::TermRead};
+use std::{io, io::Write, thread, sync::{Arc, Mutex}};
+use termion::{color, cursor, input::TermRead, raw::IntoRawMode};
 use signal_hook::{consts::SIGWINCH, iterator::Signals};
-
 use once_cell::sync::Lazy;
 
-use crate::draw::draw_window;
-use crate::fileio::delete_account;
-
-// extern crate termion;
-
+use crate::{draw::draw_window, fileio::delete_account};
 
 pub struct Session {
     current_screen: CurrentScreen,
@@ -56,10 +51,8 @@ fn main() -> io::Result<()> {
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor
     // Enter raw mode
-    crossterm::terminal::enable_raw_mode().unwrap();
-    // let mut stdout = stdout().into_raw_mode()?;
-    // write!(stdout, "").unwrap();
-    // stdout.flush().unwrap();
+    let mut stdout = std::io::stdout().into_raw_mode()?;
+    writeln!(stdout, "").unwrap();
 
 
     // Update on window size change (SIGWINCH)
@@ -72,20 +65,18 @@ fn main() -> io::Result<()> {
 
     draw_window();
 
-    let mut it = termion::async_stdin().keys();
-    loop {
-        let b = it.next();
-        match b {
-            Some(x) => match x {
-                Ok(k) => {
-                    if k == termion::event::Key::Char('q') {
-                        break;
-                    }
-                    control::switch_khit(k);
-                }
-                _ => {}
-            },
-            None => {}
+    let mut input_events = termion::async_stdin().events();
+    'main: loop {
+        for event in &mut input_events {
+            match event {
+                Ok(termion::event::Event::Key(key)) => {
+                    if key == termion::event::Key::Char('q') { break 'main; }
+                    control::switch_khit(key);
+                },
+                Ok(termion::event::Event::Mouse(_)) => {},
+                Err(error) => {},
+                _ => {},
+            }
         }
     }
 
