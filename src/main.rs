@@ -51,8 +51,7 @@ fn main() -> io::Result<()> {
     println!("\x1b[?1049h"); // enter alt screen
     println!("\x1b[?25l"); // hide cursor
     // Enter raw mode
-    let mut stdout = std::io::stdout().into_raw_mode()?;
-    writeln!(stdout, "").unwrap();
+    crossterm::terminal::enable_raw_mode().unwrap();
 
 
     // Update on window size change (SIGWINCH)
